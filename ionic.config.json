@@ -1,0 +1,7 @@
+{
+  "name": "nono",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
