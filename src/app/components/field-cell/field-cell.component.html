@@ -1,0 +1,12 @@
+<div 
+    #cell
+    class="field-cell" 
+    [ngClass]="{
+        'set': state === CellState.SET,
+        'blocked': state === CellState.BLOCKED
+    }"
+>
+    <ng-container *ngIf="state === CellState.BLOCKED"> 
+        <ion-icon #icon name="close-outline"></ion-icon>
+    </ng-container>
+</div>

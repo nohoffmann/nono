@@ -1,3 +1,21 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-header>
+    <ion-toolbar>
+
+        <ion-buttons slot="start" *ngIf="currentRoute !== '/menu'">
+          <ion-button routerLink="/">
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        
+        <ion-title>
+          {{ pageTitle }}
+        </ion-title>
+
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content >
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
 </ion-app>

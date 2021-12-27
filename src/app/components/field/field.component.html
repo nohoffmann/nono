@@ -1,0 +1,74 @@
+
+<ng-container *ngIf="gameSettings.enableScore">
+  <h1>
+    <strong>Score: {{ score }}</strong>
+  </h1>  
+</ng-container>
+
+
+<ng-container *ngIf="gameSettings.errorLimit >= 0">
+  <div class="ion-margin-top">
+    <app-lives [(errors)]="errors" [limit]="gameSettings.errorLimit"></app-lives>
+  </div>
+</ng-container>
+
+<div class="ion-margin"></div>
+
+<div class="field-alt" (mouseleave)="handleMouseUp()" (mouseup)="handleMouseUp()" (touchend)="handleMouseUp()">
+  <div *ngFor="let col of [].constructor((gameSettings.gridSize + 1)*(gameSettings.gridSize + 1)); let arrayIndex = index"
+    [ngClass]="{
+      'left-border'         : (getColIndex(arrayIndex) - 1) % 5 === 0                         && getRowIndex(arrayIndex) > 0,
+      'left-border-double'  : (getColIndex(arrayIndex) - 1)     === 0                         && getRowIndex(arrayIndex) > 0,
+      'right-border'        : (getColIndex(arrayIndex) - 1) % 5 === 4                         && getRowIndex(arrayIndex) > 0,
+      'right-border-double' : (getColIndex(arrayIndex) - 1)     === gameSettings.gridSize - 1 && getRowIndex(arrayIndex) > 0,
+      'top-border'          : (getRowIndex(arrayIndex) - 1) % 5 === 0                         && getColIndex(arrayIndex) > 0,
+      'top-border-double'   : (getRowIndex(arrayIndex) - 1)     === 0                         && getColIndex(arrayIndex) > 0,
+      'bottom-border'       : (getRowIndex(arrayIndex) - 1) % 5 === 4                         && getColIndex(arrayIndex) > 0,
+      'bottom-border-double': (getRowIndex(arrayIndex) - 1)     === gameSettings.gridSize - 1 && getColIndex(arrayIndex) > 0,
+      'hint'                : (getColIndex(arrayIndex) )        === 0                         || getRowIndex(arrayIndex) === 0
+    }"
+  >
+    <ng-container *ngIf="getRowIndex(arrayIndex) === 0 && getColIndex(arrayIndex) !== 0">  
+      <app-hints 
+        [hintNumbers]="hints.cols[(getColIndex(arrayIndex)-1)]" 
+        [style.--hint-border-color]="lineIsCleared((getColIndex(arrayIndex)-1), false) ? 'var(--ion-color-light)' : 'var(--ion-color-medium-shade)'"
+      >
+      </app-hints>
+    </ng-container>
+
+    <ng-container *ngIf="getColIndex(arrayIndex) === 0  && getRowIndex(arrayIndex) !== 0">  
+      <app-hints 
+        [hintNumbers]="hints.rows[(getRowIndex(arrayIndex)-1)]" 
+        class="vertical" 
+        [vertical]="false"
+        [style.--hint-border-color]="lineIsCleared((getRowIndex(arrayIndex)-1)) ? 'var(--ion-color-light)' : 'var(--ion-color-medium-shade)'"
+      >
+      </app-hints>
+    </ng-container>
+
+    <ng-container *ngIf="getRowIndex(arrayIndex) && getColIndex(arrayIndex) && gameSettings">
+      <app-field-cell
+        [id]="((getRowIndex(arrayIndex) - 1) * this.gameSettings.gridSize + (getColIndex(arrayIndex) - 1)).toString()"
+        [state]="actualGrid[(getRowIndex(arrayIndex) - 1)][(getColIndex(arrayIndex) - 1)]"
+        (mousedown)=" handleMouseDown(); markCell((getRowIndex(arrayIndex) - 1), (getColIndex(arrayIndex) - 1))"
+        (touchstart)="handleMouseDown(); markCell((getRowIndex(arrayIndex) - 1), (getColIndex(arrayIndex) - 1))"
+        (mouseenter)="checkIfLockHasToBeSet($event); mouseIsDown && markCell((getRowIndex(arrayIndex) - 1), (getColIndex(arrayIndex) - 1))"
+        (touchmove)=" checkIfLockHasToBeSet($event); handleTouchMove($event)"
+      ></app-field-cell>
+    </ng-container>
+  </div>
+</div>
+
+<div class="ion-margin"></div>
+
+<div class="controls">
+  <div>
+    <ion-icon size="large" name="close-outline"></ion-icon>
+  </div>
+  <div>  
+    <ion-toggle [(ngModel)]="inputModeIsSet" (ngModelChange)="handleInputModeChange()"></ion-toggle> 
+  </div>
+  <div>
+    <ion-icon size="large" name="square-outline"></ion-icon>  
+  </div>
+</div>

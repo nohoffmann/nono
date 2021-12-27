@@ -1,0 +1,34 @@
+
+
+:host {
+    display: flow-root;
+    height: 100%;
+    border-radius: 7.5px;
+    border: 0.1px solid var(--hint-border-color);
+}
+
+div {
+    user-select: none;
+    color: var(--ion-text-color);
+    font-size: 10px;   
+    display: flex;
+    gap: 5px;
+}
+
+.hint-outer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.vert {
+    flex-direction: column;
+  
+    align-self: center;
+}
+
+.done {
+    color: var(--ion-color-light);
+}

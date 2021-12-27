@@ -1,0 +1,12 @@
+
+<div [class]="'hint-outer ' + (vertical ? 'vert' : '')">
+  <ng-container *ngFor="let number of hintNumbers">
+    <div 
+      [ngClass]="{
+        'done': number.done
+      }"
+    >
+      {{ number.length }}
+    </div>
+  </ng-container>
+</div>
