@@ -19,5 +19,14 @@ This implementation is a PWA. You can try it out [here](https://nono-59f85.web.a
  - add setting to customize error limits, i.e. allow more than 3 errors
  - more sensible score system
 
+## Getting started
+To locally build and serve this project run 
+
+`npm install`
+
+then
+
+`ionic serve`
+
 
 Feel free to report any issues or to submit pull requests 
