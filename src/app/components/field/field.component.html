@@ -8,24 +8,24 @@
 
 <ng-container *ngIf="gameSettings.errorLimit >= 0">
   <div class="ion-margin-top">
-    <app-lives [(errors)]="errors" [limit]="gameSettings.errorLimit"></app-lives>
+    <app-lives [errors]="errors" [limit]="gameSettings.errorLimit"></app-lives>
   </div>
 </ng-container>
 
 <div class="ion-margin"></div>
 
-<div class="field-alt" (mouseleave)="handleMouseUp()" (mouseup)="handleMouseUp()" (touchend)="handleMouseUp()">
+<div class="game-field" (mouseleave)="handleMouseUp()" (mouseup)="handleMouseUp()" (touchend)="handleMouseUp()">
   <div *ngFor="let col of [].constructor((gameSettings.gridSize + 1)*(gameSettings.gridSize + 1)); let arrayIndex = index"
     [ngClass]="{
-      'left-border'         : (getColIndex(arrayIndex) - 1) % 5 === 0                         && getRowIndex(arrayIndex) > 0,
-      'left-border-double'  : (getColIndex(arrayIndex) - 1)     === 0                         && getRowIndex(arrayIndex) > 0,
-      'right-border'        : (getColIndex(arrayIndex) - 1) % 5 === 4                         && getRowIndex(arrayIndex) > 0,
-      'right-border-double' : (getColIndex(arrayIndex) - 1)     === gameSettings.gridSize - 1 && getRowIndex(arrayIndex) > 0,
-      'top-border'          : (getRowIndex(arrayIndex) - 1) % 5 === 0                         && getColIndex(arrayIndex) > 0,
-      'top-border-double'   : (getRowIndex(arrayIndex) - 1)     === 0                         && getColIndex(arrayIndex) > 0,
-      'bottom-border'       : (getRowIndex(arrayIndex) - 1) % 5 === 4                         && getColIndex(arrayIndex) > 0,
-      'bottom-border-double': (getRowIndex(arrayIndex) - 1)     === gameSettings.gridSize - 1 && getColIndex(arrayIndex) > 0,
-      'hint'                : (getColIndex(arrayIndex) )        === 0                         || getRowIndex(arrayIndex) === 0
+      'left-border'         : (getColIndex(arrayIndex) - 1) % preferences.gridSettings.supportLineInterval === 0                                                && getRowIndex(arrayIndex) > 0,
+      'left-border-double'  : (getColIndex(arrayIndex) - 1)                                                === 0                                                && getRowIndex(arrayIndex) > 0,
+      'right-border'        : (getColIndex(arrayIndex) - 1) % preferences.gridSettings.supportLineInterval === preferences.gridSettings.supportLineInterval - 1 && getRowIndex(arrayIndex) > 0,
+      'right-border-double' : (getColIndex(arrayIndex) - 1)                                                === gameSettings.gridSize - 1                        && getRowIndex(arrayIndex) > 0,
+      'top-border'          : (getRowIndex(arrayIndex) - 1) % preferences.gridSettings.supportLineInterval === 0                                                && getColIndex(arrayIndex) > 0,
+      'top-border-double'   : (getRowIndex(arrayIndex) - 1)                                                === 0                                                && getColIndex(arrayIndex) > 0,
+      'bottom-border'       : (getRowIndex(arrayIndex) - 1) % preferences.gridSettings.supportLineInterval === preferences.gridSettings.supportLineInterval - 1 && getColIndex(arrayIndex) > 0,
+      'bottom-border-double': (getRowIndex(arrayIndex) - 1)                                                === gameSettings.gridSize - 1                        && getColIndex(arrayIndex) > 0,
+      'hint'                : (getColIndex(arrayIndex) )                                                   === 0                                                || getRowIndex(arrayIndex) === 0
     }"
   >
     <ng-container *ngIf="getRowIndex(arrayIndex) === 0 && getColIndex(arrayIndex) !== 0">  
@@ -66,7 +66,7 @@
     <ion-icon size="large" name="close-outline"></ion-icon>
   </div>
   <div>  
-    <ion-toggle [(ngModel)]="inputModeIsSet" (ngModelChange)="handleInputModeChange()"></ion-toggle> 
+    <ion-toggle [(ngModel)]="inputModeIsSet"></ion-toggle> 
   </div>
   <div>
     <ion-icon size="large" name="square-outline"></ion-icon>  

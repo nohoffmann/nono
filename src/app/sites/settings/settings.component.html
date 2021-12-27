@@ -1,9 +1,18 @@
 
 
 <ion-list>
+  <ion-list-header>
+    <h2>Default Game Settings</h2>
+  </ion-list-header>
   <ion-item>
     <ion-label>Difficulty</ion-label>
-    <ion-range pin="true" [debounce]="100" [value]="settings.difficulty" (ionChange)="onDifficultyChange($event)" min="10" max="90">
+    <ion-range pin="true" 
+      [debounce]="100" 
+      [(ngModel)]="preferences.defaultGameSettings.difficulty" 
+      (ionChange)="writeChangesToDatabase()" 
+      min="10" 
+      max="90"
+    >
       <ion-label slot="start">0</ion-label>
       <ion-label slot="end">100%</ion-label>
     </ion-range>
@@ -12,17 +21,23 @@
     <ion-label>
       Grid Size
     </ion-label>
-    <ion-select [value]="settings.gridSize" (ionChange)="onGridSizeChange($event)" >
-      <ion-select-option [value]="5" >5</ion-select-option>
-      <ion-select-option [value]="10" >10</ion-select-option>
-      <ion-select-option [value]="15" >15</ion-select-option>
+    <ion-select 
+      [(ngModel)]="preferences.defaultGameSettings.gridSize" 
+      (ionChange)="writeChangesToDatabase()" 
+    >
+      <ng-container *ngFor="let val of generateGridSizeOptions()">
+        <ion-select-option [value]="val" >{{val}}</ion-select-option>
+      </ng-container>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>
       Limited Errors
     </ion-label>
-    <ion-select [value]="settings.errorLimit" (ionChange)="onErrorLimitChange($event)" >
+    <ion-select 
+      [(ngModel)]="preferences.defaultGameSettings.errorLimit" 
+      (ionChange)="writeChangesToDatabase()" 
+    >
       <ion-select-option [value]="-1">Off</ion-select-option>
       <ion-select-option [value]="0">0</ion-select-option>
       <ion-select-option [value]="1">1</ion-select-option>
@@ -34,14 +49,74 @@
     <ion-label>
       Enable Score
     </ion-label>
-    <ion-toggle [checked]="settings.enableScore" (ionChange)="onEnableScoreChange($event)">
-
+    <ion-toggle 
+      [(ngModel)]="preferences.defaultGameSettings.enableScore" 
+      (ionChange)="writeChangesToDatabase()"
+    >
     </ion-toggle>
   </ion-item>
-  <ion-button  [routerLink]="['/game']" [queryParams]="settings" expand="block">
-    play
-  </ion-button>
 
+  <ion-list-header>
+    <h2>General Settings</h2>
+  </ion-list-header>
+  <ion-item>
+    <ion-label>Volume</ion-label>
+    <ion-range pin="true" 
+      [debounce]="100" 
+      [(ngModel)]="preferences.volume" 
+      (ionChange)="writeChangesToDatabase()" 
+      min="0" 
+      max="100"
+    >
+      <ion-label slot="start">0</ion-label>
+      <ion-label slot="end">100%</ion-label>
+    </ion-range>
+  </ion-item>
+  <ion-item>
+    <ion-label>Accent Color</ion-label>
+    <input [(ngModel)]="preferences.accentColor" type="color" (ngModelChange)="onColorUpdate();writeChangesToDatabase()">
+  </ion-item>
+
+  <ion-list-header>
+    <h2>Grid Settings</h2>
+  </ion-list-header>
+  <ion-item>
+    <ion-label>Support Lines Interval</ion-label>
+    <ion-input 
+      slot="end" 
+      type="number" 
+      [(ngModel)]="preferences.gridSettings.supportLineInterval"
+      (ionChange)="writeChangesToDatabase()" 
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Only Multiples of Support Lines Interval as grid sizes
+    </ion-label>
+    <ion-toggle 
+      [(ngModel)]="preferences.gridSettings.onlyMultiplesOfSupportLineInterval" 
+      (ionChange)="writeChangesToDatabase()"
+    >
+    </ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Minimum Grid Size</ion-label>
+    <ion-input 
+      slot="end" 
+      type="number" 
+      [(ngModel)]="preferences.gridSettings.minimum"
+      (ionChange)="writeChangesToDatabase()" 
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Minimum Grid Size</ion-label>
+    <ion-input 
+      slot="end" 
+      type="number" 
+      [(ngModel)]="preferences.gridSettings.maximum"
+      (ionChange)="writeChangesToDatabase()" 
+    ></ion-input>
+  </ion-item>
 </ion-list>
 
 

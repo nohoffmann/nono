@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { StartGameComponent } from 'src/app/components/start-game/start-game.component';
 
 @Component({
@@ -7,20 +7,18 @@ import { StartGameComponent } from 'src/app/components/start-game/start-game.com
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit {
-
+export class MenuComponent {
   constructor(private modalController: ModalController) { }
 
-  ngOnInit() {}
-
+  /**
+   * presents modal with game settings
+   */
   public async startGame(): Promise<void> {
     const modal = await this.modalController.create({
       component: StartGameComponent,
       backdropDismiss: true,
-      cssClass: "nono-modal"
+      cssClass: 'nono-modal'
     });
-    await modal.present()
-
+    await modal.present();
   }
-
 }

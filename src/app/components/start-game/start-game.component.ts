@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { DbService } from 'src/app/services/db/db.service';
+import { defaultPreferences } from 'src/app/sites/settings/settings.component';
 import { GameSettings } from 'src/app/types/GameSettings';
+import { Preferences } from 'src/app/types/Preferences';
+import { generateGridSizeOptions } from 'src/app/utils/GenerateGridSizeOptions';
 
 @Component({
   selector: 'app-start-game',
@@ -8,34 +12,43 @@ import { GameSettings } from 'src/app/types/GameSettings';
   styleUrls: ['./start-game.component.scss'],
 })
 export class StartGameComponent {
-  constructor(private modalController: ModalController) {
+  /**
+   * settings for the game to be started
+   */
+  public settings: GameSettings = defaultPreferences.defaultGameSettings;
 
+  /**
+   * the user's preferences
+   */
+  public preferences: Preferences = defaultPreferences;
+
+  constructor(private modalController: ModalController, private dbService: DbService) {
+    this.init();
   }
 
-  public settings: GameSettings = {
-    difficulty : 50,
-    gridSize: 10,
-    errorLimit: 3,
-    enableScore: true
+  /**
+   * fetches user's preferences from IDB
+   */
+  public async init(): Promise<void> {
+    try {
+      this.preferences = await this.dbService.getPreferences();
+      this.settings = this.preferences.defaultGameSettings;
+    } catch {
+
+    }
   }
 
-  public onDifficultyChange(event): void {
-    this.settings.difficulty = event.target.value
-  }
-
-  public onGridSizeChange(event): void {
-    this.settings.gridSize = event.target.value
-  }
-
-  public onErrorLimitChange(event): void {
-    this.settings.errorLimit = event.target.value
-  }
-
-  public onEnableScoreChange(event): void {
-    this.settings.enableScore = event.target.checked;
-  }
-
+  /**
+   * close the modal
+   */
   public dismissModal(): void  {
-    this.modalController.dismiss()
+    this.modalController.dismiss();
+  }
+
+  /**
+   * @returns grid size options based on user's preferences
+   */
+  public generateGridSizeOptions() {
+    return generateGridSizeOptions(this.preferences);
   }
 }

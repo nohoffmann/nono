@@ -1,8 +1,8 @@
-import { CellCoordinate } from "./CellCoordinate";
+import { CellCoordinate } from './CellCoordinate';
 
 export interface Hint {
-    length: number,
-    done: boolean,
-    start: CellCoordinate,
-    end: CellCoordinate,
+    length: number;
+    done: boolean;
+    start: CellCoordinate;
+    end: CellCoordinate;
 };

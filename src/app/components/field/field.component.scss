@@ -5,7 +5,7 @@ $border-width: 0.1px;
     user-select: none;
 }
 
-.field-alt {
+.game-field {
     display: grid;
     grid-template-columns: max-content repeat(var(--grid-size, 10), minmax(0, 1fr));
     grid-template-rows: max-content repeat(var(--grid-size), auto);

@@ -1,5 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { GameSettings } from 'src/app/types/GameSettings';
+import { Component } from '@angular/core';
+import { DbService } from 'src/app/services/db/db.service';
+import { Preferences } from 'src/app/types/Preferences';
+import { generateGridSizeOptions } from 'src/app/utils/GenerateGridSizeOptions';
+import { hexToRgb } from 'src/app/utils/HexToRgb';
+
+export const defaultPreferences = {
+  defaultGameSettings: {
+    difficulty : 50,
+    gridSize: 10,
+    errorLimit: 3,
+    enableScore: true
+  },
+  volume: 100,
+  accentColor: document.body.style.getPropertyValue('--ion-color-primary'),
+  gridSettings: {
+    supportLineInterval: 5,
+    onlyMultiplesOfSupportLineInterval: true,
+    minimum: 5,
+    maximum: 15,
+  }
+};
 
 @Component({
   selector: 'app-settings',
@@ -7,27 +27,51 @@ import { GameSettings } from 'src/app/types/GameSettings';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent {
-  public settings: GameSettings = {
-    difficulty : 50,
-    gridSize: 10,
-    errorLimit: 3,
-    enableScore: true
+  /**
+   * the user's preferences
+   */
+  public preferences: Preferences = defaultPreferences;
+
+  constructor(private dbService: DbService) {
+    this.init();
   }
 
-  public onDifficultyChange(event): void {
-    this.settings.difficulty = event.target.value
+  /**
+   * fetches user's preferences
+   */
+  public async init(): Promise<void> {
+    try {
+      this.preferences = await this.dbService.getPreferences() || this.preferences;
+    } catch(e) {
+      console.debug(e);
+    }
   }
 
-  public onGridSizeChange(event): void {
-    this.settings.gridSize = event.target.value
+  /**
+   * writes changes back to IDB
+   */
+  public writeChangesToDatabase(): void {
+    try {
+      this.dbService.setPreferences(this.preferences);
+    } catch(e) {
+      console.debug(e);
+    }
   }
 
-  public onErrorLimitChange(event): void {
-    this.settings.errorLimit = event.target.value
+  /**
+   * instantly reflect changes of accent color
+   */
+  public onColorUpdate(): void {
+    //@ts-ignore
+    document.body.style.setProperty('--ion-color-primary', this.preferences.accentColor);
+    document.body.style.setProperty('--ion-color-primary-rgb', hexToRgb(this.preferences.accentColor));
   }
 
-  public onEnableScoreChange(event): void {
-    this.settings.enableScore = event.target.checked;
+  /**
+   * @returns array with grid size options based on user's preferences
+   */
+  public generateGridSizeOptions() {
+    return generateGridSizeOptions(this.preferences);
   }
 }
 

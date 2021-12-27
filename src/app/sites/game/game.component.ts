@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FieldComponent } from 'src/app/components/field/field.component';
 import { GameSettings } from 'src/app/types/GameSettings';
+import { defaultPreferences } from '../settings/settings.component';
 
 @Component({
   selector: 'app-game',
@@ -9,31 +10,29 @@ import { GameSettings } from 'src/app/types/GameSettings';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
+  /**
+   * component with actual game content
+   */
+  @ViewChild('field')
+  public field: FieldComponent;
 
-  @ViewChild("field")
-  public field: FieldComponent
-
-  public gameSettings: GameSettings = {
-    difficulty: 50,
-    enableScore: true,
-    gridSize: 10,
-    errorLimit: -1
-  }
+  /**
+   * settings for the game
+   */
+  public gameSettings: GameSettings = defaultPreferences.defaultGameSettings;
 
   constructor(private route: ActivatedRoute) { }
 
+  /**
+   * parses game settings from url parameters
+   */
   ngOnInit() {
     this.route.queryParams.subscribe((params: any) => {
-     console.log("routing params", params)
-      this.field?.reload()
-      this.gameSettings.difficulty = parseInt(params.difficulty);
+      this.field?.reload();
+      this.gameSettings.difficulty = parseInt(params.difficulty, 10);
       this.gameSettings.enableScore = JSON.parse(params.enableScore);
-      this.gameSettings.errorLimit = parseInt(params.errorLimit);
-      this.gameSettings.gridSize = parseInt(params.gridSize);
-      
+      this.gameSettings.errorLimit = parseInt(params.errorLimit, 10);
+      this.gameSettings.gridSize = parseInt(params.gridSize, 10);
     });
-
-    
   }
-
 }

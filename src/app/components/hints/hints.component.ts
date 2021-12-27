@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Hint } from 'src/app/types/Hint';
 
 @Component({
@@ -7,21 +7,16 @@ import { Hint } from 'src/app/types/Hint';
   styleUrls: ['./hints.component.scss'],
 })
 export class HintsComponent {
+  /**
+   * hints to display
+   */
   @Input()
-  public hintNumbers: Hint[]
+  public hintNumbers: Hint[];
 
+  /**
+   * should be true for column tips, false otherwise
+   */
   @Input()
-  public vertical: boolean = true
-
-  public lineCleared(): boolean {
-    let lineCleared = true 
-    for(const hint of this.hintNumbers) {
-      if(!hint.done) {
-        lineCleared = false
-      }
-    }
-    return lineCleared
-  }
-
+  public vertical = true;
 }
- 
+

@@ -1,23 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-lives',
   templateUrl: './lives.component.html',
   styleUrls: ['./lives.component.scss'],
 })
-export class LivesComponent implements OnInit {
-
+export class LivesComponent  {
+  /**
+   * number of wrong inputs
+   */
   @Input()
-  public errors: number = 0;
+  public errors = 0;
 
+  /**
+   * limit for wrong inputs
+   */
   @Input()
-  public limit: number = 3;
-
-  @Output()
-  public errorsChange: EventEmitter<number> = new EventEmitter()
-
-  constructor() { }
-
-  ngOnInit() {}
-
+  public limit = 3;
 }
