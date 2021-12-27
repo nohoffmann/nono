@@ -396,6 +396,11 @@ export class FieldComponent implements OnInit {
       return;
     }
 
+    //if no touch/click is happening, dont do anything
+    if(!this.mouseIsDown) {
+      return;
+    }
+
     if(event.touches) {
       event = event.touches[0];
     }
