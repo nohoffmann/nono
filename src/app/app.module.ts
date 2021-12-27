@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { LivesComponent } from './components/lives/lives.component';
 import { MenuComponent } from './sites/menu/menu.component';
 import { StartGameComponent } from './components/start-game/start-game.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,13 @@ import { StartGameComponent } from './components/start-game/start-game.component
     BrowserModule, 
     IonicModule.forRoot({animated: false}), 
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
